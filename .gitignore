@@ -1,0 +1,8 @@
+#Node dependencies
+node_modules
+
+#Temp compile files
+build/temp
+
+#Others
+build/try.html

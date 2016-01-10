@@ -1,0 +1,35 @@
+{
+  "name": "game_gear_framework",
+  "version": "0.0.0",
+  "description": "An html5 game framework based in Pixi.js",
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-run-sequence": "^0.3.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-wait": "0.0.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.6.1"
+  },
+  "scripts": {
+    "build": "gulp compile & gulp beforeCompile & gulp clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrAxf/Gear-Game-Framework.git"
+  },
+  "author": "Juan Andrés García Cañadas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MrAxf/Gear-Game-Framework/issues"
+  },
+  "homepage": "https://github.com/MrAxf/Gear-Game-Framework#readme"
+}
