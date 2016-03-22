@@ -1,46 +1,37 @@
 var gulp = require('gulp');
-var sourcemaps = require('gulp-sourcemaps');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
-var watchify = require('watchify');
-var babel = require('babelify');
-var concat = require('gulp-concat');
-var del = require('del');
-var runSequence = require('gulp-run-sequence');
-wait = require('gulp-wait');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+var insert = require('gulp-insert');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var sourcemaps = require('gulp-sourcemaps');
 
-function compileFiles() {
-  var bundler = browserify('./src/index.js', { debug: true }).transform(babel);
-  bundler.bundle()
-    .on('error', function(err) { console.error(err); this.emit('end'); })
-    .pipe(source('build.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./build/temp'));
-  return bundler;
 
-}
+var buildName = 'GGF', src='./src', dest = './build', tempDest = './build/temp';
 
-function beforeCompile() {
-  gulp.src(['./src/header.js', './build/temp/build.js'])
-    .pipe(concat('build.js'))
-    .pipe(gulp.dest('./build'));
-  gulp.src('./build/temp/build.js.map')
-    .pipe(gulp.dest('./build'));
-}
+gulp.task('js', function() {
+	browserify({entries:'./src/index.js',debug:true})
+		.transform(babelify)
+		.bundle()
+		.pipe(source(buildName + '.js'))
+		.pipe(insert.prepend('window.requestAnimFrame = (function(){\n  return  window.requestAnimationFrame   ||\n      window.webkitRequestAnimationFrame ||\n      window.mozRequestAnimationFrame;\n})();\nwindow.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;\nvar ggf;\n'))
+		.pipe(gulp.dest(dest));
+});
 
-function clean(){
-  del('./build/temp');
-}
+gulp.task('minimize', function(){
+	gulp.src(dest +'/' + buildName + '.js')
+	.pipe(rename({suffix: '.min'}))
+	.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(uglify())
+	.pipe(sourcemaps.write('.'))
+	.pipe(gulp.dest(dest));
+});
 
-function build(){
-  runSequence('compile', 'beforeCompile', 'clean');
-}
+gulp.task('watch', function() {
+	gulp.watch('./src/**/*.js', ['js']);
+});
 
-gulp.task('compile', function() { return compileFiles(); });
-gulp.task('beforeCompile', function() { return beforeCompile(); });
-gulp.task('clean', function() { return clean(); });
+gulp.task('default', ['js'], function() {
 
-//gulp.task('default', ['build']);
+});

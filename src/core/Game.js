@@ -1,5 +1,6 @@
 /*jshint esnext: true */
 import Stage from './Stage';
+import Entity from './Entity';
 
 class Game{
   constructor(idContainer, width, height, options = {}){
@@ -7,6 +8,9 @@ class Game{
     this.idContainer = idContainer;
     this.width = width;
     this.height = height;
+
+    this.stages = {};
+    this.entities = {};
 
     if(options.fps) this.fps = options.fps;
     else this.fps = -1;
@@ -22,17 +26,20 @@ class Game{
     this.then = Date.now();
 
     switch (this.fps) {
-  		case this.tps:
+
+      case this.tps:
         this.frameInterval = 1000/this.fps;
   			this.loop = this.simpleLoop;
         this.delta = 0;
   			break;
-  		case -1:
+
+      case -1:
         this.ticksInterval = 1000/this.tps;
         this.lag = 0;
   			this.loop = this.fpsUnlimitedLoop;
   		  break;
-  		default:
+
+      default:
         this.frameInterval = 1000/this.fps;
         this.ticksInterval = 1000/this.tps;
         this.thenAux = Date.now();
@@ -92,7 +99,7 @@ class Game{
   }
 
   render(){
-    this.renderer.render(this.currStage.renderContainer);
+    this.renderer.render(this.currStage.graphics);
   }
 
   loadStage(stage){
@@ -106,6 +113,32 @@ class Game{
 
   stop(){
     window.cancelAnimationFrame(this.frame);
+  }
+
+  createStage(name, prop){
+    this.stages[name] = prop;
+  }
+
+  createEntity(name, prop){
+    this.entities[name] = prop;
+  }
+
+  getStage(name){
+    let stage = new Stage(this);
+    let prop = this.stages[name];
+    for(let key in prop){
+      stage[key] = prop[key];
+    }
+    return stage;
+  }
+
+  loadEntity(name, stage){
+    let entity = new Entity(this, stage);
+    let prop = this.entities[name];
+    for(let key in prop){
+      entity[key] = prop[key];
+    }
+    return entity;
   }
 
 }

@@ -1,16 +1,15 @@
 /*jshint esnext: true */
 
 class Entity extends PIXI.Sprite{
-  constructor(game, init, update){
+  constructor(game, stage, ...args){
+    super(...args);
     this.game = game;
-    this.init = init();
-    this.update = update();
+    this.stage = stage;
   }
-  init(){
-
-  }
-  update(){
-
+  spawn(x, y){
+    this.x=x;
+    this.y=y;
+    this.stage.graphics.addChild(this);
   }
 }
 
