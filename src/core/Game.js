@@ -21,7 +21,7 @@ class Game{
     if(options.initStage)  this.loadStage(options.initStage);
     else this.currStage = new Stage();
 
-    this.renderer = PIXI.autoDetectRenderer(this.width, this.height, {backgroundColor : 0x000000});
+    this.renderer = PIXI.autoDetectRenderer(this.width, this.height, {backgroundColor : 0x6e6e6e});
 
     this.then = Date.now();
 

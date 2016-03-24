@@ -1,0 +1,42 @@
+<html>
+ <head>
+  <title> Test </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ </head>
+ <body>
+	<div id="container"></div>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.min.js"></script>
+  <script type="text/javascript" src="GGF.js"></script>
+  <script type="text/javascript">
+    var game = new ggf.Game('container', 1280, 720, {fps:60,tps:60});
+    game.createStage('main', {
+      width: 1280,
+      height:720,
+      init: function(){
+        this.circle = game.loadEntity('circle', this);
+        this.circle.init();
+        this.circle.spawn(0,0);
+      },
+      update: function(){
+        this.circle.update();
+      }
+    });
+    game.createEntity('circle', {
+      init: function(){
+        this.deg = Math.floor(Math.random() * 20 + 1);
+        this.alpha = Math.random();
+        this.graphics.beginFill(0xF00d0F, 1);
+        this.graphics.drawCircle(0, 0, this.deg);
+        this.addChild(this.graphics);
+      },
+      update: function(){
+        this.x++;
+        this.y++;
+      }
+    });
+    main = game.getStage('main');
+    game.loadStage(main);
+    game.start();
+  </script>
+ </body>
+</html>

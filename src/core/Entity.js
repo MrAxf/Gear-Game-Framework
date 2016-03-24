@@ -5,6 +5,7 @@ class Entity extends PIXI.Sprite{
     super(...args);
     this.game = game;
     this.stage = stage;
+    this.graphics = new PIXI.Graphics();
   }
   spawn(x, y){
     this.x=x;
