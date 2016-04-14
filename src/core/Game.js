@@ -132,8 +132,8 @@ class Game{
     return stage;
   }
 
-  loadEntity(name, stage){
-    let entity = new Entity(this, stage);
+  loadEntity(name, stage, ...args){
+    let entity = new Entity(this, stage, ...args);
     let prop = this.entities[name];
     for(let key in prop){
       entity[key] = prop[key];
