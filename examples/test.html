@@ -6,14 +6,14 @@
  <body>
 	<div id="container"></div>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.min.js"></script>
-  <script type="text/javascript" src="GGF.js"></script>
+  <script type="text/javascript" src="../build/GGF.js"></script>
   <script type="text/javascript">
     var game = new ggf.Game('container', 1280, 720, {fps:60,tps:60});
-    game.createStage('main', {
+    game.createResource('Stage' ,'main', {
       width: 1280,
       height:720,
       init: function(){
-        this.circle = game.loadEntity('circle', this);
+        this.circle = this.game.getResource('Entity', 'circle', this);
         this.circle.init();
         this.circle.spawn(0,0);
       },
@@ -21,7 +21,7 @@
         this.circle.update();
       }
     });
-    game.createEntity('circle', {
+    game.createResource('Entity' ,'circle', {
       init: function(){
         this.deg = Math.floor(Math.random() * 20 + 1);
         this.alpha = Math.random();
@@ -34,7 +34,7 @@
         this.y++;
       }
     });
-    main = game.getStage('main');
+    main = game.getResource('Stage', 'main');
     game.loadStage(main);
     game.start();
   </script>

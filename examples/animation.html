@@ -9,12 +9,12 @@
   <script type="text/javascript" src="../build/GGF.js"></script>
   <script type="text/javascript">
     var game = new ggf.Game('container', 960, 540, {fps:60,tps:60});
-    game.createStage('main', {
+    game.createResource('Stage', 'main', {
       width: 960,
       height:540,
       init: function(){
-        this.apple = game.loadEntity('apple', this);
-        this.mario = game.loadEntity('mario', this);
+        this.apple = this.game.getResource('Entity', 'apple', this);
+        this.mario = this.game.getResource('Entity', 'mario', this);
         this.apple.init();
         this.mario.init();
         this.apple.spawn(100, 100);
@@ -25,7 +25,7 @@
         this.mario.update();
       }
     });
-    game.createEntity('apple', {
+    game.createResource('Entity', 'apple', {
       init: function(){
         this.spriteSheet = new ggf.Spritesheet('res/Apple.png',80, 40, 1, 2);
         this.animation = new ggf.Animation(this.spriteSheet.getRow(0), 30);
@@ -36,7 +36,7 @@
         this.animation.update();
       }
     });
-    game.createEntity('mario', {
+    game.createResource('Entity', 'mario', {
       init: function(){
         this.spriteSheet = new ggf.Spritesheet('res/mario.png',180, 64, 1, 3);
         this.animation = new ggf.Animation(this.spriteSheet.getRow(0), 5);
@@ -47,7 +47,7 @@
         this.animation.update();
       }
     });
-    main = game.getStage('main');
+    main = game.getResource('Stage', 'main');
     game.loadStage(main);
     game.start();
   </script>

@@ -9,8 +9,9 @@ class Game{
     this.width = width;
     this.height = height;
 
-    this.stages = {};
-    this.entities = {};
+    this.resources = new Map();
+    this.resources.set('Stage', new Map());
+    this.resources.set('Entity', new Map());
 
     if(options.fps) this.fps = options.fps;
     else this.fps = -1;
@@ -115,30 +116,30 @@ class Game{
     window.cancelAnimationFrame(this.frame);
   }
 
-  createStage(name, prop){
-    this.stages[name] = prop;
+  createResource(type, resourceName, resource){
+    this.resources.get(type).set(resourceName, resource);
   }
 
-  createEntity(name, prop){
-    this.entities[name] = prop;
-  }
+  getResource(type, name, ...args){
+    let resource;
+    switch (type) {
+      case 'Stage':
+        resource = new Stage(this);
+        break;
 
-  getStage(name){
-    let stage = new Stage(this);
-    let prop = this.stages[name];
-    for(let key in prop){
-      stage[key] = prop[key];
+      case 'Entity':
+        resource = new Entity(this, ...args);
+        break;
+
+      default:
+        return false;
+
     }
-    return stage;
-  }
-
-  loadEntity(name, stage, ...args){
-    let entity = new Entity(this, stage, ...args);
-    let prop = this.entities[name];
+    let prop = this.resources.get(type).get(name);
     for(let key in prop){
-      entity[key] = prop[key];
+      resource[key] = prop[key];
     }
-    return entity;
+    return resource;
   }
 
 }
