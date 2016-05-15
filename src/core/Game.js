@@ -122,20 +122,21 @@ class Game{
 
   getResource(type, name, ...args){
     let resource;
+    let prop = this.resources.get(type).get(name);
     switch (type) {
       case 'Stage':
         resource = new Stage(this);
         break;
 
       case 'Entity':
-        resource = new Entity(this, ...args);
+        if(prop.initialTexture) resource = new Entity(this, ...args, prop.initialTexture);
+        else resource = new Entity(this, ...args);
         break;
 
       default:
         return false;
 
     }
-    let prop = this.resources.get(type).get(name);
     for(let key in prop){
       resource[key] = prop[key];
     }
