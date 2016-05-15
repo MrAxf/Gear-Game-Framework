@@ -5,5 +5,5 @@ node_modules
 build/temp
 
 #Others
-build
+build/try.html
 examples/tank.html
