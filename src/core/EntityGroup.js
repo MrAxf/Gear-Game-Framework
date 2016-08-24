@@ -15,6 +15,22 @@ class EntityGroup extends PIXI.Sprite{
   spawn(){
     this.stage.graphics.addChild(this);
   }
+  addEntity(entity,x, y, rotation){
+    entity.containerGroup = this;
+    entity.destroy = function(){
+      this.containerGroup.removeChild(this);
+      this.containerGroup.delete(this);
+    };
+    entity.spawn = function(x, y, rotation){
+      this.x = x;
+      this.y = y;
+      this.rotation = rotation;
+      this.containerGroup.addChild(this);
+    };
+    entity.init();
+    entity.spawn(x, y, rotation);
+    return this.entitySet.add(entity);
+  }
   addFromResource(resource, x, y, rotation, ...args){
     let entity = this.game.getResource('Entity', resource, ...args);
     entity.containerGroup = this;
@@ -30,10 +46,6 @@ class EntityGroup extends PIXI.Sprite{
     };
     entity.init();
     entity.spawn(x, y, rotation);
-    console.log(entity.x);
-    console.log(entity.y);
-    console.log(entity.rotation);
-    console.log(entity.v);
     return this.entitySet.add(entity);
   }
   delete(entity){
